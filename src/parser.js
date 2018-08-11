@@ -49,7 +49,7 @@ function toMarkdown(element, context) {
             break;
 
           case 'parameteritem': s = '* '; break;
-          case 'programlisting': s = '\n```cpp\n'; break;
+          case 'programlisting': s = '\n```c\n'; break;
           case 'itemizedlist': s = '\n\n'; break;
           case 'listitem': s = '* '; break;
           case 'sp': s = ' '; break;
@@ -197,7 +197,6 @@ module.exports = {
         m = m.concat(['{', member.kind, '} ']);
 
       case 'function':
-        m = m.concat(memberdef.$.prot, ' '); // public, private, ...
         if (memberdef.templateparamlist) {
           m.push('template<');
           if (memberdef.templateparamlist.length > 0 && memberdef.templateparamlist.param) {
@@ -219,7 +218,7 @@ module.exports = {
         m = m.concat('(');
         if (memberdef.param) {
           memberdef.param.forEach(function (param, argn) {
-            m = m.concat(argn == 0 ? [] : ',');
+            m = m.concat(argn == 0 ? [] : ', ');
             m = m.concat([toMarkdown(param.type)]);
             m = m.concat(param.declname ? [' ', toMarkdown(param.declname)] : []);
           });
@@ -227,18 +226,17 @@ module.exports = {
 
         m = m.concat(')');
         m = m.concat(memberdef.$['const']  == 'yes' ? [' ', 'const'] : []);
-        m = m.concat(memberdef.argsstring[0]._.match(/noexcept$/) ? ' noexcept' : '');
-        m = m.concat(memberdef.argsstring[0]._.match(/=\s*delete$/) ? ' = delete' : '');
-        m = m.concat(memberdef.argsstring[0]._.match(/=\s*default/) ? ' = default' : '');
         break;
 
       case 'variable':
-        m = m.concat(memberdef.$.prot, ' '); // public, private, ...
         m = m.concat(memberdef.$.static == 'yes' ? ['static', ' '] : []);
         m = m.concat(memberdef.$.mutable == 'yes' ? ['mutable', ' '] : []);
         m = m.concat(toMarkdown(memberdef.type), ' ');
         // m = m.concat(memberdef.name[0]._);
         m = m.concat(markdown.link(member.name, '#' + member.refid, true));
+        if (toMarkdown(memberdef.argsstring[0]) !== "") {
+          m = m.concat(toMarkdown(memberdef.argsstring[0]));
+        }
         break;
 
       case 'property':
@@ -434,17 +432,15 @@ module.exports = {
 
       this.parseMembers(compound, element.$, element.member);
 
-      if (compound.kind !== 'file') { // && compound.kind !== 'file'
-        log.verbose('Parsing ' + path.join(options.directory, compound.refid + '.xml'));
-        doxygen = fs.readFileSync(path.join(options.directory, compound.refid + '.xml'), 'utf8');
-        xmlParser.parseString(doxygen, function (err, data) {
-          if (err) {
-            log.verbose('warning - parse error for file' , path.join(options.directory, compound.refid + '.xml'))
-            return;
-          }
-            this.parseCompound(compound, data.doxygen.compounddef[0]);
-        }.bind(this));
-      }
+      log.verbose('Parsing ' + path.join(options.directory, compound.refid + '.xml'));
+      doxygen = fs.readFileSync(path.join(options.directory, compound.refid + '.xml'), 'utf8');
+      xmlParser.parseString(doxygen, function (err, data) {
+        if (err) {
+          log.verbose('warning - parse error for file' , path.join(options.directory, compound.refid + '.xml'))
+          return;
+        }
+          this.parseCompound(compound, data.doxygen.compounddef[0]);
+      }.bind(this));
 
     }.bind(this));
   },

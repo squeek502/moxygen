@@ -43,7 +43,7 @@ module.exports = {
         template = 'index';
         break;
       case 'page':
-        template = 'page'
+        template = 'page';
         break;
       case 'group':
       case 'namespace':
@@ -51,11 +51,11 @@ module.exports = {
           && compound.compounds[Object.keys(compound.compounds)[0]].kind == 'namespace') {
           return undefined;
         }
-        template = 'namespace';
+        template = 'group';
         break;
       case 'class':
       case 'struct':
-        template = 'class';
+        template = 'struct';
         break;
       default:
         log.warn('Cannot render ' + compound.kind + ' ' + compound.fullname);
