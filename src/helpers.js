@@ -20,17 +20,18 @@ module.exports = {
       code.forEach(function (e) {
         refs = e.split(/(\[.*\]\(.*\)|\n|\s{2}\n)/g);
         refs.forEach(function (f) {
-          if (f.charAt(0) == '[') {
+          var link = f.match(/\[(.*)\]\((.*)\)/);
+          if (link) {
             // link
-            var link = f.match(/\[(.*)\]\((.*)\)/);
-            if (link) {
-              isInline ? (s += '`') && (isInline = false) : null;
-              s += '[`' + link[1] + '`](' + link[2] + ')';
-            }
+            isInline ? (s += '`') && (isInline = false) : null;
+            s += '[`' + link[1] + '`](' + link[2] + ')';
           }
           else if (f == '\n' || f == '  \n') {
             // line break
             isInline ? (s += '`') && (isInline = false) : null;
+            s += f;
+          }
+          else if (f == ' ') {
             s += f;
           }
           else if (f) {
