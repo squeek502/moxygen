@@ -1,5 +1,3 @@
-# Index
-
 | Index |
 |--------------------------------|
 {{#each filtered.members}}| {{cell proto}} |
@@ -7,7 +5,6 @@
 {{/each}}
 
 {{#if filtered.members}}
-# Members
 
 {{#each filtered.members}}
 ### {{title proto}} {{anchor refid}}
