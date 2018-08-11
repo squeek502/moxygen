@@ -1,5 +1,9 @@
 # Moxygen
 
+This fork is mostly similar to [sourcey/moxygen](https://github.com/sourcey/moxygen) but with some (opinionated, messy) changes geared towards parsing C code documentation.
+
+---
+
 Moxygen is a Doxygen XML to Markdown converter for C++ developers who want a minimal and beautiful solution for documentating their projects.
 
 Moxygen is currently used in conjunction with GitBook to generate the API documentation for [LibSourcey](http://sourcey.com/libsourcey/).
