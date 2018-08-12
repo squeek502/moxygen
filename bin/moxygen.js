@@ -14,7 +14,7 @@ program.version(pjson.version)
   .option('-p, --pages', 'output doxygen pages into separate files', false)
   .option('-n, --noindex', 'disable generation of the index (no effect with `groups` option', false)
   .option('-a, --anchors', 'add anchors to internal links', false)
-  .option('-l, --language <lang>', 'programming language', String, 'cpp')
+  .option('-l, --language <lang>', 'programming language', String, 'c')
   .option('-t, --templates <dir>', 'custom templates directory', String, 'templates')
   .option('-q, --quiet', 'quiet mode', false)
   .parse(process.argv);
